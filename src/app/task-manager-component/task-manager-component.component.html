@@ -1,0 +1,140 @@
+<div id="taskList">
+
+
+  <a (click)="onAdd()" class="btn btn-light  content-padding" data-toggle="collapse">Add tasks</a>
+  <a (click)="onView()" class="btn btn-light content-padding" data-toggle="collapse">View Tasks</a>
+
+  <div id="addTask" *ngIf="addTaskEnabled">
+    <form #form="ngForm" (ngSubmit)="onSubmit()">
+      <div class="form-group row">
+        <label for="task" class="col-sm-2 form-control-label">Task:</label>
+        <div class="col">
+          <input type="text" id="task" name="task" [(ngModel)]="task.task" class="form-control">
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="priority" class="col-sm-2 form-control-label">Priority:</label>
+        <div class="col">
+          <ng5-slider [value]="10" [(ngModel)]="task.priority" [options]="options" name="priority" class="form-control">
+          </ng5-slider>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="parentTask" class="col-sm-2 form-control-label">Parent Task:</label>
+        <div class="col">
+          <input type="text" id="parentTask" name="parentTask" [(ngModel)]="task.parentTask" class="form-control">
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="startDate" class="col-sm-2 form-control-label">Start Date:</label>
+        <div class="col">
+          <input type="text" id="startDate" name="startDate" [(ngModel)]="task.startDate" class="form-control">
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="endDate" class="col-sm-2 form-control-label">End Date:</label>
+        <div class="col">
+          <input tupe="text" id="endDate" name="endDate" [(ngModel)]="task.endDate" class="form-control">
+        </div>
+      </div>
+      <input type="submit" class="btn btn-primary" value="{{saveButton}}">
+    </form>
+  </div>
+  <div id="viewTemplate" *ngIf="!addTaskEnabled">
+    <form #form="ngForm" (ngSubmit)="onSubmit()">
+      <div class="form-group row">
+        <label for="task" class="col-sm-2 form-control-label">Task:</label>
+        <div class="col-4">
+          <input [(ngModel)]="searchTask.task" type="text" id="task" name="task" (keyup.enter)="filterTasks()"
+            (blur)="filterTasks()" class="form-control">
+        </div>
+
+        <label for="parentTask" class="col-sm-2 form-control-label">Parent Task:</label>
+        <div class="col-4">
+          <input [(ngModel)]="searchTask.parentTask" type="text" id="parentTask" name="parentTask"
+            (keyup.enter)="filterTasks()" (blur)="filterTasks()" class="form-control">
+        </div>
+
+      </div>
+      <div class="form-group row">
+        <label for="priority-start" class="col-sm-2 form-control-label">Priority From</label>
+        <div class="col-1">
+          <input [(ngModel)]="searchTask.startpriority" type="text" id="priority-start" name="priority-start"
+            (keyup.enter)="filterTasks()" (blur)="filterTasks()" class="form-control">
+        </div>
+        <label for="priority-end" class="col-sm-2 form-control-label">Priority To</label>
+        <div class="col-1">
+          <input [(ngModel)]="searchTask.endpriority" type="text" id="priority-end" name="priority-end"
+            (keyup.enter)="filterTasks()" (blur)="filterTasks()" class="form-control">
+        </div>
+
+        <label for="startDate" class="col-sm-1 form-control-label">Start Date:</label>
+        <div class="col-2">
+          <input [(ngModel)]="searchTask.startDate" type="text" id="startDate" name="startDate"
+            (keyup.enter)="filterTasks()" (blur)="filterTasks()" class="form-control">
+        </div>
+        <label for="endDate" class="col-sm-1 form-control-label">End Date:</label>
+        <div class="col-2">
+          <input [(ngModel)]="searchTask.endDate" type="text" id="endDate" name="endDate" (keyup.enter)="filterTasks()"
+            (blur)="filterTasks()" class="form-control">
+        </div>
+      </div>
+    </form>
+    <div id="template" *ngFor="let task of tasks">
+      <div class="row">
+        <div class="col-sm-2 content-header">
+          Task
+        </div>
+        <div class="col-sm-2 content-header">
+          Parent Task
+        </div>
+        <div class="col-sm-1 content-header">
+          Priority
+        </div>
+
+        <div class="col-sm-2 content-header">
+          Start Date
+        </div>
+        <div class="col-sm-2 content-header">
+          End Date
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-2 btn btn-light content-padding">
+          {{task.task}}
+        </div>
+        <div class="col-sm-2 btn btn-light">
+          {{task.parentTask}}
+        </div>
+        <div class="col-sm-1">
+          {{task.priority}}
+        </div>
+        <div class="col-sm-2">
+          {{task.startDate|date:'d/M/yyyy'}}
+        </div>
+
+        <div class="col-sm-1">
+          {{task.endDate|date:'d/M/yyyy'}}
+        </div>
+
+        <div class="col-sm-1">
+          <button class="btn btn-light btn-outline-dark" (click)="onUpdate(task)">Edit</button>
+        </div>
+        <div class="col-sm-2">
+          <button type="button" class="btn  btn-light btn-outline-dark" (click)="onClick(task)">End Task
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+    integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+    crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+    integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+    crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+    integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+    crossorigin="anonymous"></script>
+</div>
