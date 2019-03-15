@@ -14,10 +14,12 @@ export class TaskManagerComponentComponent implements OnInit {
 
   tasks: Array<Task>;
   task: Task;
+  parentTask: Task;
   addTaskEnabled: boolean;
   taskHandlerService: TaskService;
   saveButton: string;
   searchTask: SearchTask;
+  errorMessage: string;
   options: Options = {
     floor: 0,
     ceil: 30
@@ -31,21 +33,44 @@ export class TaskManagerComponentComponent implements OnInit {
    }
 
   ngOnInit() {
-    console.log('initialize');
+
     this.taskHandlerService.getAllTasks().subscribe(tasksList => this.tasks = tasksList);
   }
 
 
 
   onSubmit() {
+    this.errorMessage='';
     if (this.saveButton === 'Save')
     {
-      this.tasks.push(this.task);
-      this.taskHandlerService.postTask(this.task);
+
+      if (this.task.parentTask){
+        this.taskHandlerService.getTask(this.task.parentTask).subscribe(parentTask=>this.handlePostAdd(parentTask));
+      }
+      else{
+        this.tasks.push(this.task);
+        this.taskHandlerService.postTask(this.task);
+        this.addTaskEnabled = false;
+      }
+
+
     } else {
+      this.addTaskEnabled = false;
       this.taskHandlerService.updateTask(this.task);
     }
-    this.addTaskEnabled = false;
+
+  }
+
+  handlePostAdd(parentTask: Task) {
+      if(parentTask){
+        this.tasks.push(this.task);
+        this.taskHandlerService.postTask(this.task);
+        this.addTaskEnabled = false;
+      }
+      else{
+        this.errorMessage='Parent Task Not found';
+        throw Error('Parent Task Not found');
+      }
   }
 
   onClick(task: Task) {
@@ -82,26 +107,28 @@ export class TaskManagerComponentComponent implements OnInit {
 
 
   onAdd() {
-    console.log('on add invoked');
+    this.errorMessage='';
+
     this.task = new Task();
     this.saveButton = 'Save';
     this.addTaskEnabled = true;
   }
 
   onView() {
-    console.log('on add invoked');
+
     this.task = new Task();
     this.saveButton = 'Save';
     this.addTaskEnabled = false;
-    console.log('initialize view');
+
     this.taskHandlerService.getAllTasks().subscribe(tasksList => this.tasks = tasksList);
   }
 
   onUpdate(task: Task) {
+    this.errorMessage='';
     this.saveButton = 'Update';
     this.task = task;
     this.addTaskEnabled = true;
-    console.log('on update invoked');
+
   }
 
 }

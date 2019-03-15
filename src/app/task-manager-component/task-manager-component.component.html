@@ -28,13 +28,19 @@
       <div class="form-group row">
         <label for="startDate" class="col-sm-2 form-control-label">Start Date:</label>
         <div class="col">
-          <input type="text" id="startDate" name="startDate" [(ngModel)]="task.startDate" class="form-control">
+          <input type="datetime-local" id="startDate" name="startDate" [(ngModel)]="task.startDate" class="form-control">
         </div>
       </div>
       <div class="form-group row">
         <label for="endDate" class="col-sm-2 form-control-label">End Date:</label>
         <div class="col">
-          <input tupe="text" id="endDate" name="endDate" [(ngModel)]="task.endDate" class="form-control">
+            <input type="datetime-local" id="endDate" name="endtDate" [(ngModel)]="task.endDate" class="form-control">
+          </div>
+      </div>
+      <div class="form-group row" *ngIf="errorMessage" >
+
+        <div class="col alert alert-danger">
+          <p>{{errorMessage}}</p>
         </div>
       </div>
       <input type="submit" class="btn btn-primary" value="{{saveButton}}">

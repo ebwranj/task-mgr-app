@@ -39,13 +39,12 @@ export class TaskService {
   }
 
   postTask(task: Task) {
-    console.log(task.id);
     this.http.post('http://localhost:8080/task-mgr/taskMgr/addTask', task).subscribe();
   }
 
   updateTask(task: Task) {
     const params = new HttpParams()
-    .set('id', task.id.toString());
+    .set('id', task.id);
     this.http.put('http://localhost:8080/task-mgr/taskMgr/updateTask', task).subscribe();
   }
 
