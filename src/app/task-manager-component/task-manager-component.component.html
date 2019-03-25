@@ -9,7 +9,6 @@
       <div class="form-group row">
         <label for="task" class="col-sm-2 form-control-label">Task:</label>
         <div class="col">
-<<<<<<< HEAD
           <input type="text" id="task" name="task" [(ngModel)]="task.task" required class="form-control" #taskControl="ngModel">
           <div *ngIf="taskControl.invalid && (taskControl.dirty || taskControl.touched)"
               class="alert alert-danger">
@@ -17,9 +16,6 @@
                   Name is required.
               </div>
           </div>
-=======
-          <input type="text" id="task" name="task" [(ngModel)]="task.task" class="form-control">
->>>>>>> 83ecc0e7c2cae0e60f7ed474d4a5dba0367461bd
         </div>
       </div>
       <div class="form-group row">
@@ -53,11 +49,7 @@
           <p>{{errorMessage}}</p>
         </div>
       </div>
-<<<<<<< HEAD
       <input type="submit" class="btn btn-primary" [disabled]="!form.valid" value="{{saveButton}}">
-=======
-      <input type="submit" class="btn btn-primary" value="{{saveButton}}">
->>>>>>> 83ecc0e7c2cae0e60f7ed474d4a5dba0367461bd
     </form>
   </div>
   <div id="viewTemplate" *ngIf="!addTaskEnabled">
